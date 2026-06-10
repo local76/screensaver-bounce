@@ -388,7 +388,8 @@ pub fn draw_dashboard(db: &Bounce, grid: &mut [TerminalCell], cols: usize, rows:
     }
 
     let player_gx = bhop_start_x + 6;
-    let player_gy = floor_y - 1 - db.player_y.round() as usize;
+    let offset = db.player_y.round().max(0.0) as usize;
+    let player_gy = (floor_y - 1).saturating_sub(offset);
     let player_char = match db.bhop_state {
         BhopState::Playing => {
             if db.player_y > 0.1 {

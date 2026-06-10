@@ -8,8 +8,6 @@ use library::core::screensaver::Screensaver;
 use library::core::logo_block::render_logo_block;
 
 use library::platform::native::sys_info::get_system_info;
-
-#[cfg(feature = "sys-info")]
 use library::apps::identity;
 use library::toolkit::sys_info::query_current_palette;
 
@@ -91,14 +89,11 @@ impl Bounce {
         let os_name = sys.os;
         let kernel_version = sys.kernel;
 
-        #[cfg(feature = "sys-info")]
         let (username, shell_name, refresh_rate) = (
             identity::username(),
             identity::shell_name(),
             identity::refresh_rate_hz(),
         );
-        #[cfg(not(feature = "sys-info"))]
-        let (username, shell_name, refresh_rate) = (String::new(), String::new(), 0i32);
 
         // library 4.0: pull the accent from the canonical ScreenPalette.
         let theme_accent = query_current_palette().accent;
@@ -176,14 +171,7 @@ impl Bounce {
 
         let palette = query_current_palette();
         self.theme_accent = palette.accent;
-        #[cfg(feature = "sys-info")]
-        {
-            self.theme_mode = if get_system_info_theme_is_dark() { "Dark Mode" } else { "Light Mode" }.to_string();
-        }
-        #[cfg(not(feature = "sys-info"))]
-        {
-            self.theme_mode = "Default".to_string();
-        }
+        self.theme_mode = if get_system_info_theme_is_dark() { "Dark Mode" } else { "Light Mode" }.to_string();
     }
 }
 

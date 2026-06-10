@@ -7,10 +7,10 @@ autobins = false
 
 [[bin]]
 name = "bounce"
-path = "src/screensaver_shim.rs"
+path = "src/main.rs"
 
 [dependencies]
-library = { git = "https://github.com/local76/library.git", branch = "main", features = ["screensaver-runtime"] }
+library = { git = "https://github.com/local76/library.git", branch = "main" }
 
 [build-dependencies]
 library = { git = "https://github.com/local76/library.git", branch = "main" }
@@ -49,3 +49,5 @@ assets = [
     { source = "assets/scene-bounce.desktop", dest = "/usr/share/applications/scene-bounce.desktop", mode = "644" },
     { source = "assets/scene-bounce.xml", dest = "/usr/share/xscreensaver/config/scene-bounce.xml", mode = "644" }
 ]
+[patch."https://github.com/local76/library.git"]
+library = { path = "../library" }

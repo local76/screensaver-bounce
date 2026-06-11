@@ -1,4 +1,4 @@
-﻿//! Consolidated bounce screensaver effect module.
+//! Consolidated bounce screensaver effect module.
 //!
 //! **Taxonomy Classification**: System Role (Purpose - Application Software).
 
@@ -67,6 +67,10 @@ pub struct Bounce {
 
     pub elapsed: f32,
     pub(crate) rng: LcgRng,
+    pub(super) on_battery: bool,
+    pub(super) frame_time_ema: f32,
+    pub(super) quality_scale: f32,
+    pub(super) target_frame_time: f32,
 }
 
 impl Default for Bounce {
@@ -111,6 +115,7 @@ impl Bounce {
         };
 
         let logo_lines = render_logo_block(&sys.logo_text, None);
+        let on_battery = sys.power_status.contains("Battery");
 
         Self {
             cols: 80,
@@ -156,6 +161,10 @@ impl Bounce {
 
             elapsed: 0.0,
             rng: LcgRng::new(9876),
+            on_battery,
+            frame_time_ema: 0.01666667,
+            quality_scale: 1.0,
+            target_frame_time: 0.01666667,
         }
     }
 
@@ -164,7 +173,8 @@ impl Bounce {
         self.uptime_secs = sys.uptime_secs;
         self.ram_used_mb = sys.mem_used_mb;
         self.ram_total_mb = sys.mem_total_mb;
-        self.power_status = sys.power_status;
+        self.power_status = sys.power_status.clone();
+        self.on_battery = sys.power_status.contains("Battery");
         self.disk_summary = sys.disk_summary;
         self.gpus = sys.gpus;
         self.monitors = sys.monitors;
@@ -180,8 +190,30 @@ impl Screensaver for Bounce {
         self.cols = cols;
         self.rows = rows;
 
-        let delta = dt.as_secs_f32();
+        let dt_secs = dt.as_secs_f32();
+
+        // Auto-detect high refresh rates during the startup phase
+        if self.elapsed < 2.0 && dt_secs > 0.001 {
+            if dt_secs < self.target_frame_time - 0.001 {
+                self.target_frame_time = dt_secs;
+            }
+        }
+
+        // Exponential moving average for frame time (alpha = 0.1)
+        self.frame_time_ema = self.frame_time_ema * 0.9 + dt_secs.min(0.2) * 0.1;
+
+        let speed_mult = if self.on_battery { 0.65 } else { 1.0 };
+        let delta = dt_secs * speed_mult;
         self.elapsed += delta;
+
+        // Adjust quality_scale based on frame time performance vs target
+        if self.elapsed > 1.5 {
+            if self.frame_time_ema > self.target_frame_time * 1.15 {
+                self.quality_scale = (self.quality_scale - 0.15 * delta).max(0.20);
+            } else if self.frame_time_ema < self.target_frame_time * 1.05 {
+                self.quality_scale = (self.quality_scale + 0.04 * delta).min(1.0);
+            }
+        }
 
         self.stat_update_timer += delta;
         if self.stat_update_timer >= 1.0 {

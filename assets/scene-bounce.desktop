@@ -1,8 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=bounce - retro terminal screensaver effect
-Comment=Screensaver effect: bounce
-Exec=bounce
-Icon=bounce
-Terminal=false
-Categories=Screensaver;

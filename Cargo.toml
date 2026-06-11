@@ -31,9 +31,10 @@ depends = "libc6, xterm"
 section = "utils"
 priority = "optional"
 assets = [
-    ["target/release/bounce", "usr/libexec/screensaver-shims/bounce", "755"],
-    ["assets/scene-bounce.desktop", "usr/share/applications/scene-bounce.desktop", "644"],
-    ["assets/scene-bounce.xml", "usr/share/xscreensaver/config/scene-bounce.xml", "644"]
+    ["target/release/bounce", "usr/libexec/local76/screensavers/bounce", "755"],
+    ["assets/local76-bounce.desktop", "usr/share/applications/local76-bounce.desktop", "644"],
+    ["assets/local76-bounce.xml", "usr/share/xscreensaver/config/local76-bounce.xml", "644"],
+    ["assets/local76-bounce.png", "usr/share/pixmaps/local76-bounce.png", "644"]
 ]
 
 [package.metadata.generate-rpm]
@@ -45,9 +46,10 @@ summary = "bounce - retro terminal screensaver effect"
 description = "Screensaver effect (bounce) part of the screensavers collection."
 license = "MIT"
 assets = [
-    { source = "target/release/bounce", dest = "/usr/libexec/screensaver-shims/bounce", mode = "755" },
-    { source = "assets/scene-bounce.desktop", dest = "/usr/share/applications/scene-bounce.desktop", mode = "644" },
-    { source = "assets/scene-bounce.xml", dest = "/usr/share/xscreensaver/config/scene-bounce.xml", mode = "644" }
+    { source = "target/release/bounce", dest = "/usr/libexec/local76/screensavers/bounce", mode = "755" },
+    { source = "assets/local76-bounce.desktop", dest = "/usr/share/applications/local76-bounce.desktop", mode = "644" },
+    { source = "assets/local76-bounce.xml", dest = "/usr/share/xscreensaver/config/local76-bounce.xml", mode = "644" },
+    { source = "assets/local76-bounce.png", dest = "/usr/share/pixmaps/local76-bounce.png", mode = "644" }
 ]
 [patch."https://github.com/local76/library.git"]
 library = { path = "../library" }

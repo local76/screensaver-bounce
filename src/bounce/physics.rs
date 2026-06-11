@@ -100,7 +100,7 @@ pub fn draw_dashboard(db: &Bounce, grid: &mut [TerminalCell], cols: usize, rows:
     }
 
     if cols < 80 || rows < 30 {
-        let warn = "Screen size too small for TUI Dashboard.";
+        let warn = "Screen size too small for console dashboard.";
         let start_x = cols.saturating_sub(warn.len()) / 2;
         let start_y = rows / 2;
         for (i, ch) in warn.chars().enumerate() {

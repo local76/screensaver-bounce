@@ -1,6 +1,6 @@
 # bounce
 
-> A three-panel cyberpunk TUI screensaver / mini-game, fully driven by live system data.
+> A three-panel cyberpunk screensaver / mini-game, fully driven by live system data.
 
 The most meta of the 10 scenes: a three-panel layout where the left panel is a live diagnostics readout, the middle is a simulated command console, and the right is a side-scrolling bunny-hop game whose AI skill level adapts over time.
 
@@ -46,4 +46,4 @@ Under `HKEY_CURRENT_USER\Software\local76\bounce`:
 - The bunny getting better over long runs is intentional and satisfying to watch.
 - Fully playable while still functioning as a proper screensaver (only non-space inputs exit).
 
-Part of the [screensavers](https://github.com/local76/screensavers) collection. See the root README for installation.
+Part of the local76 screensaver collection. See [local76/local76](https://github.com/local76/local76) for the full list of scenes.

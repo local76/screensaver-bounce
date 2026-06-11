@@ -139,7 +139,7 @@ impl Bounce {
             auto_skill: 0.72,
             logo_lines,
 
-            console_lines: vec!["Initializing TUI system...".to_string()],
+            console_lines: vec!["Initializing console system...".to_string()],
             current_command_idx: 0,
             current_typed_len: 0,
             command_state: CommandState::CoolDown,
